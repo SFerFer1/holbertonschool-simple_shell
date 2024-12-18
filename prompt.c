@@ -1,19 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-char  **dividir(char *str)
+int count_strings(char *str)
 {
-	const char* separador = " ";
-	char *token = strtok(str, separador);
+	int count = 0;
+	char *temp1 = strdup(str);
+	char *token1 = strtok(temp1, " \t");
+
+	if (token1 != NULL)
+	{
+		count++;
+		token1 = strtok(NULL, " \t");
+	}
+	free(temp1);
+	return (count);
+}
+char  **split_string(char *str)
+{
+	int num = count_strings(str);
+	char **words = (char**) malloc(num * sizeof(char*));
+	char *temp = strdup(str);
 	int cont = 0;
+	char *token = strtok(temp, " \t");
 	if (token != NULL)
 	{
-		cont++;
-		printf("%i", cont);
-		token = strtok(NULL, separador);
-
+		words[cont++] = token;
+		token = strtok(NULL, " \t");
 	}
+	free(temp);
+	return (words);
 }
 
 int main(void)
