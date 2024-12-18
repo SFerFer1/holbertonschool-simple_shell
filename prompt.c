@@ -7,7 +7,7 @@ int count_strings(char *str)
 	char *temp1 = strdup(str);
 	char *token1 = strtok(temp1, " \t");
 
-	if (token1 != NULL)
+	while (token1 != NULL)
 	{
 		count++;
 		token1 = strtok(NULL, " \t");
@@ -17,16 +17,37 @@ int count_strings(char *str)
 }
 char  **split_string(char *str)
 {
-	int num = count_strings(str);
-	char **words = (char**) malloc(num * sizeof(char*));
-	char *temp = strdup(str);
 	int cont = 0;
-	char *token = strtok(temp, " \t");
-	if (token != NULL)
+	int num;
+	char **words;
+	char *temp;
+	char *token;
+
+	if (str == NULL || *str == '\0')
+		return (NULL);
+
+	num = count_strings(str);
+	temp = strdup(str);
+
+	if (num == 0)
 	{
-		words[cont++] = token;
+		free(temp);
+		return (NULL);
+	}
+	words = (char**) malloc((num + 1) * sizeof(char*));
+	if (words == NULL)
+	{
+		free(temp);
+		return (NULL);
+	}
+	token = strtok(temp, " \t");
+	while (token != NULL)
+	{
+		words[cont++] = strdup(token);
 		token = strtok(NULL, " \t");
 	}
+	words[cont] = NULL;
+
 	free(temp);
 	return (words);
 }
