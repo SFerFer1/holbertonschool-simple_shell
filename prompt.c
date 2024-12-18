@@ -1,6 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+void free_split_string(char **words)
+{
+	if (words == NULL)
+		return;
+
+	for (int i = 0; words[i] != NULL; i++)
+	{
+		free(words[i]);
+	}
+
+	free(words);
+}
+void print_split_string(char **words)
+{
+	if (words == NULL)
+		return;
+
+	for (int i = 0; words[i] != NULL; i++)
+	{
+		printf("-%s", words[i]);
+	}
+
+}
+
+
 int count_strings(char *str)
 {
 	int count = 0;
@@ -43,7 +69,9 @@ char  **split_string(char *str)
 	token = strtok(temp, " \t");
 	while (token != NULL)
 	{
-		words[cont++] = strdup(token);
+		
+		words[cont] = strdup(token);
+		cont++;
 		token = strtok(NULL, " \t");
 	}
 	words[cont] = NULL;
@@ -63,8 +91,8 @@ int main(void)
 
 	while ((recive = getline(&line, &len, stdin)) != -1)
 	{
-		dividir(line);
 		printf("%s$ ", line);
+		print_split_string(split_string(line));
 	}
 
 	free(line);
