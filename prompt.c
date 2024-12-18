@@ -85,6 +85,7 @@ int main(void)
 	char *line = NULL;
 	size_t len = 0;
 	ssize_t recive;
+	char **words;
 
 	if (line == NULL)
 		printf("$ ");
@@ -92,9 +93,14 @@ int main(void)
 	while ((recive = getline(&line, &len, stdin)) != -1)
 	{
 		printf("%s$ ", line);
-		print_split_string(split_string(line));
+		words = split_string(line);
+		if (words != NULL)
+        {
+	free_split_string(words);
 	}
 
+	}
+	
 	free(line);
 	return(0);
 }
