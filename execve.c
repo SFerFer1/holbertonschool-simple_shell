@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/wait.h>
-int main (void)
+#include "simple_shell.h"
+int exceve (void)
 {
 	char *argv[] = {"ls", "-l", "/tmp", NULL};
 	char *envp[] = {NULL};
@@ -30,7 +31,7 @@ int main (void)
 
 					h5 = fork();
 
-					if (h5 == 0)
+					if (h5 > 0)
 						waitpid(h5, NULL, 0);
 				}
 			}

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "simple_shell.h"
 void free_split_string(char **words)
 {
 	if (words == NULL)
@@ -14,19 +14,6 @@ void free_split_string(char **words)
 
 	free(words);
 }
-void print_split_string(char **words)
-{
-	if (words == NULL)
-		return;
-
-	for (int i = 0; words[i] != NULL; i++)
-	{
-		printf("-%s", words[i]);
-	}
-
-}
-
-
 int count_strings(char *str)
 {
 	int count = 0;
@@ -54,7 +41,6 @@ char  **split_string(char *str)
 
 	num = count_strings(str);
 	temp = strdup(str);
-
 	if (num == 0)
 	{
 		free(temp);
@@ -69,13 +55,11 @@ char  **split_string(char *str)
 	token = strtok(temp, " \t");
 	while (token != NULL)
 	{
-		
 		words[cont] = strdup(token);
 		cont++;
 		token = strtok(NULL, " \t");
 	}
 	words[cont] = NULL;
-
 	free(temp);
 	return (words);
 }
@@ -93,14 +77,23 @@ int main(void)
 	while ((recive = getline(&line, &len, stdin)) != -1)
 	{
 		printf("%s$ ", line);
+		if (line[recive - 1] == '\n') 
+			line[recive - 1] = '\0';
+
 		words = split_string(line);
-		if (words != NULL)
-        {
-	free_split_string(words);
-	}
+
+
+		if (words != NULL && words[0] != NULL)
+		{
+
+			if (execvp(words[0], words) == -1)
+				perror("execvp");
+
+			free_split_string(words);
+		}
 
 	}
-	
+
 	free(line);
 	return(0);
 }
