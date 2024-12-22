@@ -70,30 +70,48 @@ int main(void)
 	size_t len = 0;
 	ssize_t recive;
 	char **words;
+	pid_t pid;
 
-	if (line == NULL)
-		printf("$ ");
+	printf("$ ");
+	printf("PATH: %s\n", getenv("PATH"));
 
-	while ((recive = getline(&line, &len, stdin)) != -1)
+
+	while ((recive = getline(&line, &len, stdin)) != -1) 
 	{
-		printf("%s$ ", line);
 		if (line[recive - 1] == '\n') 
 			line[recive - 1] = '\0';
 
 		words = split_string(line);
 
-
-		if (words != NULL && words[0] != NULL)
+		if (words != NULL && words[0] != NULL) 
 		{
+			pid = fork();
 
-			if (execvp(words[0], words) == -1)
-				perror("execvp");
-
-			free_split_string(words);
+			if (pid == 0)
+			{
+				if (execvp(words[0], words) == -1)
+				{
+					perror("execvp");
+					free_split_string(words);
+					exit(1);
+				}
+			} 
+			else if (pid > 0)
+			{
+				wait(NULL);
+				free_split_string(words);
+			}
+			else 
+			{
+				perror("fork");
+				free_split_string(words);
+				exit(1);
+			}
 		}
 
+		printf("$ ");
 	}
 
 	free(line);
-	return(0);
+	return (0);
 }
