@@ -4,10 +4,12 @@
 #include "simple_shell.h"
 void free_split_string(char **words)
 {
+	int i;
+
 	if (words == NULL)
 		return;
 
-	for (int i = 0; words[i] != NULL; i++)
+	for (i = 0; words[i] != NULL; i++)
 	{
 		free(words[i]);
 	}
@@ -103,7 +105,7 @@ int main(void)
 			}
 			else 
 			{
-				perror("fork");
+				perror(" it fork wrongg");
 				free_split_string(words);
 				exit(1);
 			}
