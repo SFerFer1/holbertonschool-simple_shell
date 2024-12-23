@@ -48,7 +48,7 @@ char  **split_string(char *str)
 		free(temp);
 		return (NULL);
 	}
-	words = (char**) malloc((num + 1) * sizeof(char*));
+	words = (char **) malloc((num + 1) * sizeof(char *));
 	if (words == NULL)
 	{
 		free(temp);
@@ -68,27 +68,21 @@ char  **split_string(char *str)
 
 int main(void)
 {
-	char *line = NULL;
+	char *line = NULL, **words;
 	size_t len = 0;
 	ssize_t recive;
-	char **words;
 	pid_t pid;
 
 	printf("$ ");
 	printf("PATH: %s\n", getenv("PATH"));
-
-
-	while ((recive = getline(&line, &len, stdin)) != -1) 
+	while ((recive = getline(&line, &len, stdin)) != -1)
 	{
-		if (line[recive - 1] == '\n') 
+		if (line[recive - 1] == '\n')
 			line[recive - 1] = '\0';
-
 		words = split_string(line);
-
-		if (words != NULL && words[0] != NULL) 
+		if (words != NULL && words[0] != NULL)
 		{
 			pid = fork();
-
 			if (pid == 0)
 			{
 				if (execvp(words[0], words) == -1)
@@ -97,23 +91,21 @@ int main(void)
 					free_split_string(words);
 					exit(1);
 				}
-			} 
+			}
 			else if (pid > 0)
 			{
 				wait(NULL);
 				free_split_string(words);
 			}
-			else 
+			else
 			{
 				perror(" it fork wrongg");
 				free_split_string(words);
 				exit(1);
 			}
 		}
-
 		printf("$ ");
 	}
-
 	free(line);
 	return (0);
 }
