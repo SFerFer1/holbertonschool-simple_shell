@@ -42,7 +42,7 @@ char  **split_string(char *str)
 		return (NULL);
 
 	num = count_strings(str);
-	temp = strdup(str);
+	temp = _strdup(str);
 	if (num == 0)
 	{
 		free(temp);
