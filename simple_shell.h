@@ -9,5 +9,5 @@ int exceve (void);
 void free_split_string(char **words);
 int count_strings(char *str);
 char  **split_string(char *str);
-
+char *_strdup(char *str);
 #endif

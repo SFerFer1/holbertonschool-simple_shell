@@ -19,7 +19,7 @@ void free_split_string(char **words)
 int count_strings(char *str)
 {
 	int count = 0;
-	char *temp1 = strdup(str);
+	char *temp1 = _strdup(str);
 	char *token1 = strtok(temp1, " \t");
 
 	while (token1 != NULL)
@@ -57,7 +57,7 @@ char  **split_string(char *str)
 	token = strtok(temp, " \t");
 	while (token != NULL)
 	{
-		words[cont] = strdup(token);
+		words[cont] = _strdup(token);
 		cont++;
 		token = strtok(NULL, " \t");
 	}
