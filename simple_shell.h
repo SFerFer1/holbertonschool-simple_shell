@@ -4,10 +4,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/wait.h>
-int exceve (void);
+char *find_exec(const char *filename);
+char *my_getenv(const char *name);
 void free_split_string(char **words);
 int count_strings(char *str);
-char  **split_string(char *str);
 char *_strdup(char *str);
+char  **split_string(char *str);
 #endif

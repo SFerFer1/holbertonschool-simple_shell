@@ -85,7 +85,8 @@ int main(void)
 			pid = fork();
 			if (pid == 0)
 			{
-				if (execvp(words[0], words) == -1)
+
+				if (execve(find_exec(line), words, NULL) == -1)
 				{
 					perror("execvp");
 					free_split_string(words);
