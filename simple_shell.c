@@ -88,7 +88,7 @@ int main(void)
 
 				if (execve(find_exec(line), words, NULL) == -1)
 				{
-					perror("execvp");
+					perror("execve");
 					free_split_string(words);
 					exit(1);
 				}

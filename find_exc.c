@@ -44,7 +44,13 @@ char *find_exec(const char *filename) {
 			return NULL;
 		}
 
-		sprintf(full_path, "%s/%s", path, filename);
+		
+		strncpy(full_path, path, path_len);
+        full_path[path_len] = '\0';
+
+        strncat(full_path, "/", total_len - path_len - 1);
+
+        strncat(full_path, filename, total_len - strlen(full_path) - 1);
 
 
 		
