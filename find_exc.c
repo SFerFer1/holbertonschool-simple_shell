@@ -19,7 +19,7 @@ char *find_exec(const char *filename) {
 	}
 	
 	
-	path_env_copy = strdup(path_env);
+	path_env_copy = _strdup(path_env);
     if (path_env_copy == NULL)
     {
         perror("strdup");
