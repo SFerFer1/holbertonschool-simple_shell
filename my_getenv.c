@@ -3,7 +3,8 @@ extern char **environ;
 
 char *my_getenv(const char *name)
 {
-	for (int i = 0; environ[i] != NULL; i++)
+int i;
+	for (i = 0; environ[i] != NULL; i++)
 	{
 		if (strncmp(environ[i], name, strlen(name)) == 0 && environ[i][strlen(name)] == '=')
 		{

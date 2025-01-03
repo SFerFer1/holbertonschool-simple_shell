@@ -74,7 +74,7 @@ int main(void)
 	pid_t pid;
 
 	printf("$ ");
-	printf("PATH: %s\n", getenv("PATH"));
+
 	while ((recive = getline(&line, &len, stdin)) != -1)
 	{
 		if (line[recive - 1] == '\n')
