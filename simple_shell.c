@@ -33,7 +33,7 @@ int count_strings(char *str)
 char  **split_string(char *str)
 {
 	int cont = 0;
-	int num;
+	int num, j;
 	char **words;
 	char *temp;
 	char *token;
@@ -58,6 +58,14 @@ char  **split_string(char *str)
 	while (token != NULL)
 	{
 		words[cont] = _strdup(token);
+		if (words[cont] == NULL)
+        	{
+            		for (j = 0; j < cont; j++)
+                		free(words[j]);
+            		free(words);
+            		free(temp);
+            		return (NULL);
+        	}
 		cont++;
 		token = strtok(NULL, " \t");
 	}
@@ -68,7 +76,7 @@ char  **split_string(char *str)
 
 int main(void)
 {
-	char *line = NULL, **words;
+	char *line = NULL, **words, *exec_path;
 	size_t len = 0;
 	ssize_t recive;
 	pid_t pid;
@@ -85,6 +93,14 @@ int main(void)
 			pid = fork();
 			if (pid == 0)
 			{
+				exec_path = find_exec(line);
+            			if (exec_path == NULL)
+            			{
+                			fprintf(stderr, "Command not found: %s\n", line);
+                			free_split_string(words);
+                			exit(127);
+            			}
+
 
 				if (execve(find_exec(line), words, NULL) == -1)
 				{
