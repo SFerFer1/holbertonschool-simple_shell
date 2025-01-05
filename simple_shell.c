@@ -74,6 +74,7 @@ char  **split_string(char *str)
 
 int main(void)
 {
+	extern char **environ;
 	char *line = NULL, **words, *exec_path;
 	size_t len = 0;
 	ssize_t recive;
@@ -98,7 +99,7 @@ int main(void)
                 			free_split_string(words);
                 			exit(127);
             			}
-				if (execve(find_exec(line), words, NULL) == -1)
+				if (execve(exec_path, words, environ) == -1)
 				{
 					perror("execve");
 					free_split_string(words);
@@ -110,6 +111,7 @@ int main(void)
 			{
 				wait(NULL);
 				free_split_string(words);
+				free(exec_path);
 			}
 			else
 			{
