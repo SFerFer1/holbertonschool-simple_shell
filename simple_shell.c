@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "simple_shell.h"
+
 void free_split_string(char **words)
 {
 	int i;
@@ -100,12 +98,11 @@ int main(void)
                 			free_split_string(words);
                 			exit(127);
             			}
-
-
 				if (execve(find_exec(line), words, NULL) == -1)
 				{
 					perror("execve");
 					free_split_string(words);
+					free(exec_path);
 					exit(1);
 				}
 			}
@@ -118,6 +115,7 @@ int main(void)
 			{
 				perror(" it fork wrongg");
 				free_split_string(words);
+				free(line);
 				exit(1);
 			}
 		}
