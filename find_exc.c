@@ -9,7 +9,7 @@ char *find_exec(const char *filename) {
 	struct stat buffer;
 	if (path_env == NULL)
 	{
-		fprintf(stderr, "No se encontró la variable de entorno PATH\n");
+		
 		return NULL;
 	}
 	

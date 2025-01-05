@@ -84,6 +84,8 @@ int main(void)
 	size_t len = 0;
 	ssize_t recive;
 	pid_t pid;
+	
+
 
 	printf("$ ");
 
@@ -100,12 +102,15 @@ int main(void)
 				exec_path = find_exec(line);
             			if (exec_path == NULL)
             			{
-                			fprintf(stderr, "Command not found: %s\n", line);
+					free(line);
+					free(exec_path);                		
                 			free_split_string(words);
                 			exit(127);
             			}
+				
 				if (execve(exec_path, words, environ) == -1)
 				{
+					free(line);
 					perror("execve");
 					free_split_string(words);
 					free(exec_path);
@@ -117,6 +122,7 @@ int main(void)
 				wait(NULL);
 				free_split_string(words);
 				free(exec_path);
+				free(line);
 			}
 			else
 			{
