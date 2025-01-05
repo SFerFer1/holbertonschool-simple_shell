@@ -72,6 +72,11 @@ char  **split_string(char *str)
 	return (words);
 }
 
+/**
+ * main - la shell en si
+ * Return: int
+ */
+
 int main(void)
 {
 	extern char **environ;
@@ -123,6 +128,6 @@ int main(void)
 		}
 		printf("$ ");
 	}
-	free(line);
+	free(exec_path);
 	return (0);
 }
