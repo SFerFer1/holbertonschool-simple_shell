@@ -1,4 +1,5 @@
 #include "simple_shell.h"
+
 /**
  * _strdup -returns a pointer to a newly allocated space in memory
  *
@@ -6,29 +7,26 @@
  *
  *  Return:  null f str = NULL
  */
-char *_strdup(char *str)
+
+char *_strdup(const char *str)
 {
-char *t;
-unsigned int i;
-unsigned int largo = 0;
+    int len, i;
+    char *dup;
 
-if (str == NULL)
-return (NULL);
+	if (str == NULL)
+        return NULL;
 
-while (str[largo] != '\0')
-largo++;
+    len = 0;
+    while (str[len] != '\0')
+        len++;
 
+    dup = malloc(len + 1);
+    if (dup == NULL)
+        return NULL;
 
-t = malloc(sizeof(char) * (largo + 1));
+    for (i = 0; i < len; i++)
+        dup[i] = str[i];
+    dup[len] = '\0';
 
-if (t == NULL)
-return (NULL);
-
-
-for (i = 0; i < largo; i++)
-t[i] = str[i];
-
-t[largo] = '\0';
-
-return (t);
+    return dup;
 }
