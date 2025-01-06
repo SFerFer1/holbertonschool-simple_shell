@@ -13,12 +13,15 @@ void free_split_string(char **words)
 	}
 
 	free(words);
-}
+} 
 int count_strings(char *str)
 {
 	int count = 0;
 	char *temp1 = _strdup(str);
 	char *token1 = strtok(temp1, " \t");
+
+	if (temp1 == NULL)
+		return (0);
 
 	while (token1 != NULL)
 	{
@@ -41,6 +44,10 @@ char  **split_string(char *str)
 
 	num = count_strings(str);
 	temp = _strdup(str);
+
+	if (temp == NULL)
+		return (0);
+
 	if (num == 0)
 	{
 		free(temp);
@@ -57,13 +64,14 @@ char  **split_string(char *str)
 	{
 		words[cont] = _strdup(token);
 		if (words[cont] == NULL)
-        	{
-            		for (j = 0; j < cont; j++)
-                		free(words[j]);
-            		free(words);
-            		free(temp);
-            		return (NULL);
-        	}
+		{
+			for (j = 0; j < cont; j++)
+				free(words[j]);
+			free(words);
+			words = NULL;
+			free(temp);
+			return (NULL);
+		}
 		cont++;
 		token = strtok(NULL, " \t");
 	}
@@ -84,13 +92,10 @@ int main(void)
 	size_t len = 0;
 	ssize_t recive;
 	pid_t pid;
-	
 
-
-	printf("$ ");
-
-	while ((recive = getline(&line, &len, stdin)) != -1)
+	while (1)
 	{
+<<<<<<< HEAD
 	
 		if (line[recive - 1] == '\n')
 			line[recive - 1] = '\0';
@@ -124,25 +129,73 @@ int main(void)
 				}
 			}
 			else if (pid > 0)
+=======
+		printf("$ ");
+		recive = getline(&line, &len, stdin);
+		if (recive == -1)
+			break;
+
+		if (line[recive - 1] == '\n')
+			line[recive - 1] = '\0';
+
+		words = split_string(line);
+		if (words == NULL || words[0] == NULL)
+		{
+			free_split_string(words);
+			words = NULL;
+			continue;
+		}
+
+		pid = fork();
+		if (pid == 0)
+		{
+			exec_path = find_exec(words[0]);
+			if (exec_path == NULL)
+>>>>>>> Bruno
 			{
-				wait(NULL);
+				fprintf(stderr, "%s: command not found\n", words[0]);
 				free_split_string(words);
+<<<<<<< HEAD
 				if (exec_path != NULL) {
         			free(exec_path);
     					}
 				
+=======
+				words = NULL;
+				exit(127);
+>>>>>>> Bruno
 			}
-			else
+
+			if (execve(exec_path, words, environ) == -1)
 			{
-				perror(" it fork wrongg");
+				perror("execve");
+				free(exec_path);
+				exec_path = NULL;
 				free_split_string(words);
-				free(line);
+				words = NULL;
 				exit(1);
 			}
 		}
+<<<<<<< HEAD
 	printf("$ ");	
 	}
 	free(line);
 	
+=======
+		else if (pid > 0)
+		{
+			wait(NULL);
+		}
+		else
+		{
+			perror("fork");
+		}
+
+		free_split_string(words);
+		words = NULL;
+	}
+
+	free(line);
+>>>>>>> Bruno
 	return (0);
 }
