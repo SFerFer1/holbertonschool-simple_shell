@@ -95,41 +95,6 @@ int main(void)
 
 	while (1)
 	{
-<<<<<<< HEAD
-	
-		if (line[recive - 1] == '\n')
-			line[recive - 1] = '\0';
-		words = split_string(line);
-		if (words != NULL && words[0] != NULL)
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				
-				exec_path = find_exec(line);
-
-            			if (exec_path == NULL)
-            			{
-	      				
-                			free_split_string(words);
-                			exit(127);
-            			}
-				
-				if (execve(exec_path, words, environ) == -1)
-				{
-					printf("\n");	
-					perror("execve");
-					free_split_string(words);
-					free(exec_path);
-					exit(1);
-				}
-				else
-				{
-				printf("\n");
-				}
-			}
-			else if (pid > 0)
-=======
 		printf("$ ");
 		recive = getline(&line, &len, stdin);
 		if (recive == -1)
@@ -151,19 +116,11 @@ int main(void)
 		{
 			exec_path = find_exec(words[0]);
 			if (exec_path == NULL)
->>>>>>> Bruno
 			{
 				fprintf(stderr, "%s: command not found\n", words[0]);
 				free_split_string(words);
-<<<<<<< HEAD
-				if (exec_path != NULL) {
-        			free(exec_path);
-    					}
-				
-=======
 				words = NULL;
 				exit(127);
->>>>>>> Bruno
 			}
 
 			if (execve(exec_path, words, environ) == -1)
@@ -176,12 +133,6 @@ int main(void)
 				exit(1);
 			}
 		}
-<<<<<<< HEAD
-	printf("$ ");	
-	}
-	free(line);
-	
-=======
 		else if (pid > 0)
 		{
 			wait(NULL);
@@ -196,6 +147,5 @@ int main(void)
 	}
 
 	free(line);
->>>>>>> Bruno
 	return (0);
 }
