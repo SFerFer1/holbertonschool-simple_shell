@@ -97,8 +97,9 @@ int main(void)
 	{
 		
 		recive = getline(&line, &len, stdin);
-		if (recive == -1)
+		if (recive == -1 || strcmp(line, "exit\n") == 0)
 			break;
+
 
 		if (line[recive - 1] == '\n')
 			line[recive - 1] = '\0';
