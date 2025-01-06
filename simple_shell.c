@@ -13,13 +13,15 @@ void free_split_string(char **words)
 	}
 
 	free(words);
-	words = NULL;
 } 
 int count_strings(char *str)
 {
 	int count = 0;
 	char *temp1 = _strdup(str);
 	char *token1 = strtok(temp1, " \t");
+
+	if (temp1 == NULL)
+		return (0);
 
 	while (token1 != NULL)
 	{
@@ -42,6 +44,10 @@ char  **split_string(char *str)
 
 	num = count_strings(str);
 	temp = _strdup(str);
+
+	if (temp == NULL)
+		return (0);
+
 	if (num == 0)
 	{
 		free(temp);
@@ -121,6 +127,7 @@ int main(void)
 			{
 				perror("execve");
 				free(exec_path);
+				exec_path = NULL;
 				free_split_string(words);
 				words = NULL;
 				exit(1);
