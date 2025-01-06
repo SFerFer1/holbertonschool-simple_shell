@@ -80,7 +80,7 @@ char  **split_string(char *str)
 int main(void)
 {
 	extern char **environ;
-	char *line = NULL, **words, *exec_path;
+	char *line = NULL, **words = NULL, *exec_path = NULL;
 	size_t len = 0;
 	ssize_t recive;
 	pid_t pid;
@@ -102,15 +102,14 @@ int main(void)
 				exec_path = find_exec(line);
             			if (exec_path == NULL)
             			{
-					free(line);
-					free(exec_path);                		
+	      		
                 			free_split_string(words);
                 			exit(127);
             			}
 				
 				if (execve(exec_path, words, environ) == -1)
 				{
-					free(line);
+					
 					perror("execve");
 					free_split_string(words);
 					free(exec_path);
@@ -121,7 +120,9 @@ int main(void)
 			{
 				wait(NULL);
 				free_split_string(words);
-				free(exec_path);
+				if (exec_path != NULL) {
+        			free(exec_path);
+    					}
 				free(line);
 			}
 			else
