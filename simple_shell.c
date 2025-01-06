@@ -87,10 +87,11 @@ int main(void)
 	
 
 
-	printf("$ ");
+	
 
 	while ((recive = getline(&line, &len, stdin)) != -1)
 	{
+	printf("$ ");
 		if (line[recive - 1] == '\n')
 			line[recive - 1] = '\0';
 		words = split_string(line);
@@ -125,7 +126,7 @@ int main(void)
 				if (exec_path != NULL) {
         			free(exec_path);
     					}
-				free(line);
+				
 			}
 			else
 			{
@@ -137,6 +138,7 @@ int main(void)
 		}
 		
 	}
-	free(exec_path);
+	free(line);
+	
 	return (0);
 }
