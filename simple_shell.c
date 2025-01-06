@@ -106,6 +106,7 @@ int main(void)
             			{
 	      				printf("%s", exec_path);
                 			free_split_string(words);
+					words = NULL;
                 			exit(127);
             			}
 				
@@ -114,7 +115,9 @@ int main(void)
 					
 					perror("execve");
 					free_split_string(words);
+					words = NULL;
 					free(exec_path);
+					exec_path = NULL;
 					exit(1);
 				}
 			}
@@ -122,21 +125,21 @@ int main(void)
 			{
 				wait(NULL);
 				free_split_string(words);
-				if (exec_path != NULL) {
-        			free(exec_path);
-    					}
+				words = NULL;
 				free(line);
+				line = NULL;
 			}
 			else
 			{
 				perror(" it fork wrongg");
 				free_split_string(words);
+				words = NULL;
 				free(line);
+				line = NULL;
 				exit(1);
 			}
 		}
 		
 	}
-	free(exec_path);
 	return (0);
 }
