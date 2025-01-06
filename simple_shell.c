@@ -95,7 +95,7 @@ int main(void)
 
 	while (1)
 	{
-		printf("$ ");
+		
 		recive = getline(&line, &len, stdin);
 		if (recive == -1)
 			break;
