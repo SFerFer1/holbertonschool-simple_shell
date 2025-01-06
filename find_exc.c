@@ -7,11 +7,17 @@ char *find_exec(const char *filename) {
 	size_t filename_len;
 	char *path;
 	struct stat buffer;
+
+	 if (filename[0] == '/')
+	 {
+        return _strdup(filename);
+    	}
 	if (path_env == NULL)
 	{
 		
 		return NULL;
 	}
+
 	
 	
 	path_env_copy = _strdup(path_env);
@@ -51,6 +57,7 @@ char *find_exec(const char *filename) {
 		
 		if (stat(full_path, &buffer) == 0 && (buffer.st_mode & S_IXUSR)) {
 			free(path_env_copy);
+			printf("%s", full_path);
 			return full_path;
 		}
 

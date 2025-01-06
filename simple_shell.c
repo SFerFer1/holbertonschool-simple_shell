@@ -99,10 +99,12 @@ int main(void)
 			pid = fork();
 			if (pid == 0)
 			{
+				printf("%s", line);
 				exec_path = find_exec(line);
+
             			if (exec_path == NULL)
             			{
-	      		
+	      				printf("%s", exec_path);
                 			free_split_string(words);
                 			exit(127);
             			}
@@ -133,7 +135,7 @@ int main(void)
 				exit(1);
 			}
 		}
-		printf("$ ");
+		
 	}
 	free(exec_path);
 	return (0);
