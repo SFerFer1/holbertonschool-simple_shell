@@ -13,7 +13,8 @@ void free_split_string(char **words)
 	}
 
 	free(words);
-}
+	words = NULL;
+} 
 int count_strings(char *str)
 {
 	int count = 0;
@@ -57,13 +58,14 @@ char  **split_string(char *str)
 	{
 		words[cont] = _strdup(token);
 		if (words[cont] == NULL)
-        	{
-            		for (j = 0; j < cont; j++)
-                		free(words[j]);
-            		free(words);
-            		free(temp);
-            		return (NULL);
-        	}
+		{
+			for (j = 0; j < cont; j++)
+				free(words[j]);
+			free(words);
+			words = NULL;
+			free(temp);
+			return (NULL);
+		}
 		cont++;
 		token = strtok(NULL, " \t");
 	}
@@ -84,62 +86,59 @@ int main(void)
 	size_t len = 0;
 	ssize_t recive;
 	pid_t pid;
-	
 
-
-	printf("$ ");
-
-	while ((recive = getline(&line, &len, stdin)) != -1)
+	while (1)
 	{
+		printf("$ ");
+		recive = getline(&line, &len, stdin);
+		if (recive == -1)
+			break;
+
 		if (line[recive - 1] == '\n')
 			line[recive - 1] = '\0';
-		words = split_string(line);
-		if (words != NULL && words[0] != NULL)
-		{
-			pid = fork();
-			if (pid == 0)
-			{
-				printf("%s", line);
-				exec_path = find_exec(line);
 
-            			if (exec_path == NULL)
-            			{
-	      				printf("%s", exec_path);
-                			free_split_string(words);
-					words = NULL;
-                			exit(127);
-            			}
-				
-				if (execve(exec_path, words, environ) == -1)
-				{
-					
-					perror("execve");
-					free_split_string(words);
-					words = NULL;
-					free(exec_path);
-					exec_path = NULL;
-					exit(1);
-				}
-			}
-			else if (pid > 0)
+		words = split_string(line);
+		if (words == NULL || words[0] == NULL)
+		{
+			free_split_string(words);
+			words = NULL;
+			continue;
+		}
+
+		pid = fork();
+		if (pid == 0)
+		{
+			exec_path = find_exec(words[0]);
+			if (exec_path == NULL)
 			{
-				wait(NULL);
+				fprintf(stderr, "%s: command not found\n", words[0]);
 				free_split_string(words);
 				words = NULL;
-				free(line);
-				line = NULL;
+				exit(127);
 			}
-			else
+
+			if (execve(exec_path, words, environ) == -1)
 			{
-				perror(" it fork wrongg");
+				perror("execve");
+				free(exec_path);
 				free_split_string(words);
 				words = NULL;
-				free(line);
-				line = NULL;
 				exit(1);
 			}
 		}
-		
+		else if (pid > 0)
+		{
+			wait(NULL);
+		}
+		else
+		{
+			perror("fork");
+		}
+
+		free_split_string(words);
+		words = NULL;
 	}
+
+	free(line);
 	return (0);
 }
