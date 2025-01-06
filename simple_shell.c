@@ -87,11 +87,11 @@ int main(void)
 	
 
 
-	
+	printf("$ ");
 
 	while ((recive = getline(&line, &len, stdin)) != -1)
 	{
-	printf("$ ");
+	
 		if (line[recive - 1] == '\n')
 			line[recive - 1] = '\0';
 		words = split_string(line);
@@ -100,23 +100,27 @@ int main(void)
 			pid = fork();
 			if (pid == 0)
 			{
-				printf("%s", line);
+				
 				exec_path = find_exec(line);
 
             			if (exec_path == NULL)
             			{
-	      				printf("%s", exec_path);
+	      				
                 			free_split_string(words);
                 			exit(127);
             			}
 				
 				if (execve(exec_path, words, environ) == -1)
 				{
-					
+					printf("\n");	
 					perror("execve");
 					free_split_string(words);
 					free(exec_path);
 					exit(1);
+				}
+				else
+				{
+				printf("\n");
 				}
 			}
 			else if (pid > 0)
@@ -136,7 +140,7 @@ int main(void)
 				exit(1);
 			}
 		}
-		
+	printf("$ ");	
 	}
 	free(line);
 	
