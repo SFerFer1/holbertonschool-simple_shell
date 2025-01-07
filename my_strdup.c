@@ -10,23 +10,23 @@
 
 char *_strdup(const char *str)
 {
-    int len, i;
-    char *dup;
+	int len, i;
+	char *dup;
 
 	if (str == NULL)
-        return NULL;
+		return (NULL);
 
-    len = 0;
-    while (str[len] != '\0')
-        len++;
+	len = 0;
+	while (str[len] != '\0')
+		len++;
 
-    dup = malloc(len + 1);
-    if (dup == NULL)
-        return NULL;
+	dup = malloc(len + 1);
+	if (dup == NULL)
+		return (NULL);
 
-    for (i = 0; i < len; i++)
-        dup[i] = str[i];
-    dup[len] = '\0';
+	for (i = 0; i < len; i++)
+		dup[i] = str[i];
+	dup[len] = '\0';
 
-    return dup;
+	return (dup);
 }

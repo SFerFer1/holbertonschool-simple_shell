@@ -1,5 +1,10 @@
 #include "simple_shell.h"
 
+/**
+ * free_split_string - libera un array de strings
+ * words: string perteneciente al array
+ */
+
 void free_split_string(char **words)
 {
 	int i;
@@ -13,7 +18,14 @@ void free_split_string(char **words)
 	}
 
 	free(words);
-} 
+}
+
+/**
+ * count_strings - cuenta strings en el array
+ * @str: pointer al string
+ * Return: numero de strings
+ */
+
 int count_strings(char *str)
 {
 	int count = 0;
@@ -31,6 +43,13 @@ int count_strings(char *str)
 	free(temp1);
 	return (count);
 }
+
+/**
+ * split_string - Divide una cadena de texto en palabras tokens
+ * @str: puntero a un string
+ * Return: doble puntero (char **) que apunta al arreglo de cadenas
+ */
+
 char  **split_string(char *str)
 {
 	int cont = 0;
@@ -81,8 +100,9 @@ char  **split_string(char *str)
 }
 
 /**
- * main - la shell en si
- * Return: int
+ * main - Es la función principal que implementa una shell simple
+ * Return: Retorna 0 al finalizar correctamente
+ * Puede retornar otros valores si se encuentra algún error
  */
 
 int main(void)
@@ -95,15 +115,11 @@ int main(void)
 
 	while (1)
 	{
-		
 		recive = getline(&line, &len, stdin);
 		if (recive == -1 || strcmp(line, "exit\n") == 0)
 			break;
-
-
 		if (line[recive - 1] == '\n')
 			line[recive - 1] = '\0';
-
 		words = split_string(line);
 		if (words == NULL || words[0] == NULL)
 		{
@@ -111,7 +127,6 @@ int main(void)
 			words = NULL;
 			continue;
 		}
-
 		pid = fork();
 		if (pid == 0)
 		{
@@ -123,7 +138,6 @@ int main(void)
 				words = NULL;
 				exit(127);
 			}
-
 			if (execve(exec_path, words, environ) == -1)
 			{
 				perror("execve");
@@ -135,18 +149,12 @@ int main(void)
 			}
 		}
 		else if (pid > 0)
-		{
 			wait(NULL);
-		}
 		else
-		{
 			perror("fork");
-		}
-
 		free_split_string(words);
 		words = NULL;
 	}
-
 	free(line);
 	return (0);
 }
